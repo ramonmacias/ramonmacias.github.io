@@ -3,12 +3,12 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://example.org/</loc>
+    <loc>http://example.org/post/</loc>
     <lastmod>2017-11-04T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/post/</loc>
+    <loc>http://example.org/</loc>
     <lastmod>2017-11-04T00:00:00+00:00</lastmod>
   </url>
   
@@ -18,11 +18,25 @@
   </url>
   
   <url>
+    <loc>http://example.org/top/about/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.org/top/books/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://example.org/categories/</loc>
   </url>
   
   <url>
     <loc>http://example.org/tags/</loc>
+  </url>
+  
+  <url>
+    <loc>http://example.org/top/</loc>
   </url>
   
 </urlset>
