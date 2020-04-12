@@ -3,40 +3,40 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://example.org/post/</loc>
-    <lastmod>2017-11-04T00:00:00+00:00</lastmod>
+    <loc>https://ramonmacias.github.io/</loc>
+    <lastmod>2020-04-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/</loc>
-    <lastmod>2017-11-04T00:00:00+00:00</lastmod>
+    <loc>https://ramonmacias.github.io/post/</loc>
+    <lastmod>2020-04-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/2017/11/03/hello-world/</loc>
-    <lastmod>2017-11-04T00:00:00+00:00</lastmod>
+    <loc>https://ramonmacias.github.io/2020/04/12/hello-world/</loc>
+    <lastmod>2020-04-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/top/about/</loc>
+    <loc>https://ramonmacias.github.io/top/about/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://example.org/top/books/</loc>
+    <loc>https://ramonmacias.github.io/top/books/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://example.org/categories/</loc>
+    <loc>https://ramonmacias.github.io/categories/</loc>
   </url>
   
   <url>
-    <loc>http://example.org/tags/</loc>
+    <loc>https://ramonmacias.github.io/tags/</loc>
   </url>
   
   <url>
-    <loc>http://example.org/top/</loc>
+    <loc>https://ramonmacias.github.io/top/</loc>
   </url>
   
 </urlset>

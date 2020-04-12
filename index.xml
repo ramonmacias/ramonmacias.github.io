@@ -1,42 +1,41 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Ramon Blog</title>
-    <link>http://example.org/</link>
-    <description>Recent content on Ramon Blog</description>
+    <title>Blog Not Found</title>
+    <link>https://ramonmacias.github.io/</link>
+    <description>Recent content on Blog Not Found</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 04 Nov 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 12 Apr 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://ramonmacias.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Welcome to Zhaohuabing Blog</title>
-      <link>http://example.org/2017/11/03/hello-world/</link>
-      <pubDate>Sat, 04 Nov 2017 00:00:00 +0000</pubDate>
+      <title>Welcome to Ramon Blog</title>
+      <link>https://ramonmacias.github.io/2020/04/12/hello-world/</link>
+      <pubDate>Sun, 12 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/2017/11/03/hello-world/</guid>
-      <description>“Yeah It&amp;rsquo;s on. ” Hello World! From Australia</description>
+      <guid>https://ramonmacias.github.io/2020/04/12/hello-world/</guid>
+      <description>“Yeah It&amp;rsquo;s on. ” Hello World!</description>
     </item>
     
     <item>
       <title></title>
-      <link>http://example.org/top/about/</link>
+      <link>https://ramonmacias.github.io/top/about/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/top/about/</guid>
-      <description>Huabing Zhao is an ICT veteran with a passion for open source. He has a solid experience in the telecommunication and information technology industry for more than 17 years.
-Throughout his career, he has built a number of large-scale, cross-country OSS/BSS platforms/systems and operation tools, most of them are still running in productions.
-He loves open source and has been contributing to a variety of open source projects, including Istio(Service Mesh https://istio.</description>
+      <guid>https://ramonmacias.github.io/top/about/</guid>
+      <description>The passion for technology and innovation motivated me to study my degree in Computer Science. After a few years of experience, I still have the same impulse for learning new things every day, therefore I consider myself a person who adapts easily to new challenges.
+I am also a nature and sports lover that makes me have a good balance in my personal and professional life. In addition, I love to discover new cultures through their cuisine and nature.</description>
     </item>
     
     <item>
       <title></title>
-      <link>http://example.org/top/books/</link>
+      <link>https://ramonmacias.github.io/top/books/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/top/books/</guid>
+      <guid>https://ramonmacias.github.io/top/books/</guid>
       <description>Machine learning学习笔记 Coursera 在线课程 Machine learning 笔记讲师: 吴恩达(Andrew Ng) 课程地址：https://www.</description>
     </item>
     
