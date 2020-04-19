@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Blog Not Found</title>
+    <title>El Met</title>
     <link>https://ramonmacias.github.io/</link>
-    <description>Recent content on Blog Not Found</description>
+    <description>Recent content on El Met</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 12 Apr 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 13 Apr 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://ramonmacias.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Welcome to Ramon Blog</title>
-      <link>https://ramonmacias.github.io/2020/04/12/hello-world/</link>
-      <pubDate>Sun, 12 Apr 2020 00:00:00 +0000</pubDate>
+      <title>Welcome to my blog</title>
+      <link>https://ramonmacias.github.io/2020/04/13/hello-world/</link>
+      <pubDate>Mon, 13 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://ramonmacias.github.io/2020/04/12/hello-world/</guid>
-      <description>“Yeah It&amp;rsquo;s on. ” Hello World!</description>
+      <guid>https://ramonmacias.github.io/2020/04/13/hello-world/</guid>
+      <description>“Yeah It&amp;rsquo;s on. ”
+ Welcome and good morning! for all these people who is reading these lines and don&amp;rsquo;t know exactly why are you reading it, don&amp;rsquo;t worry I&amp;rsquo;m in the same boat. On this first blog post I want to talk a bit about my main blog&amp;rsquo;s goal and why I think this is going to be a great tool for me.
+I have been working as a computer engineer for some time (not too much), over this period of time I learnt a lot of new things in a different ways.</description>
     </item>
     
     <item>
@@ -26,8 +28,8 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://ramonmacias.github.io/top/about/</guid>
-      <description>The passion for technology and innovation motivated me to study my degree in Computer Science. After a few years of experience, I still have the same impulse for learning new things every day, therefore I consider myself a person who adapts easily to new challenges.
-I am also a nature and sports lover that makes me have a good balance in my personal and professional life. In addition, I love to discover new cultures through their cuisine and nature.</description>
+      <description>Life  “If there is any one secret of success, it lies in the ability to get the other person&amp;rsquo;s point of view and see things from that person&amp;rsquo;s angle as well as from your own. Henry Ford”
+ My name is Ramon Macias, I was born in Manzanares Spain, but I moved to a small town in the middleware of the Catalan Pyrenees when I was 1 year old. The passion for computer science started when I had my first computer, and as you can imagine, I used it for play video games, I was fascinated about how all these games can simulate some parts of the real world, and all these years there we have been seeing the evolution on the video games.</description>
     </item>
     
     <item>
