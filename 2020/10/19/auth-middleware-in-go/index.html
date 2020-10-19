@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="Welcome to my blog" />
-    <meta property="og:title" content="Welcome to my blog" />
-    <meta property="twitter:title" content="Welcome to my blog" />
+    <meta name="title" content="Auth Middleware in Go" />
+    <meta property="og:title" content="Auth Middleware in Go" />
+    <meta property="twitter:title" content="Auth Middleware in Go" />
     
 
     
@@ -34,9 +34,9 @@
     <meta name="keyword"  content="Ramon, Macias, Blog, Go, Computer">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Welcome to my blog-Ramon Blog</title>
+    <title>Auth Middleware in Go-Ramon Blog</title>
 
-    <link rel="canonical" href="/2020/04/13/hello-world/">
+    <link rel="canonical" href="/2020/10/19/auth-middleware-in-go/">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -143,7 +143,7 @@
 
 <style type="text/css">
     header.intro-header {
-        background-image: url('/img/kangaroo_canberra.jpg')
+        background-image: url('/img/sunset-collada-verda.jpg')
     }
 </style>
 <header class="intro-header">
@@ -153,16 +153,24 @@
                 <div class="post-heading">
                     <div class="tags">
                         
+                        <a class="tag" href="/tags/go" title="Go">
+                            Go
+                        </a>
+                        
+                        <a class="tag" href="/tags/auth" title="Auth">
+                            Auth
+                        </a>
+                        
                     </div>
-                    <h1>Welcome to my blog</h1>
-                    <h2 class="subheading">Hello World, Hello Blog</h2>
+                    <h1>Auth Middleware in Go</h1>
+                    <h2 class="subheading">A simple proposal for auth middleware</h2>
                     <span class="meta">
                         Posted by 
                         
                             Ramon
                          
                         on 
-                        Monday, April 13, 2020
+                        Monday, October 19, 2020
                         
                         
                         
@@ -190,20 +198,69 @@
                 <header>
                     <h2>TOC</h2>
                 </header>
-                <nav id="TableOfContents"></nav>
+                <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#proposal">Proposal</a></li>
+        <li><a href="#packages">Packages</a></li>
+        <li><a href="#concerns">Concerns</a></li>
+        <li><a href="#authorization-header-based">Authorization header based</a></li>
+        <li><a href="#cookie-based">Cookie based</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
                 
                 <blockquote>
-<p>“Yeah It&rsquo;s on. ”</p>
+<p>We’re just enthusiastic about what we do. &ndash; Steve Jobs</p>
 </blockquote>
-<p>Welcome and good morning! for all these people who is reading these lines and don&rsquo;t know exactly why are you reading it, don&rsquo;t worry I&rsquo;m in the same boat. On this first blog post I want to talk a bit about my main blog&rsquo;s goal and why I think this is going to be a great tool for me.</p>
-<p>I have been working as a computer engineer for some time (not too much), over this period of time I learnt a lot of new things in a different ways. On my first stage I discovered about the real size of the projects, in compare with those I did at the university, and I realised that if I want to become a real engineer I should start working hard, so this is when I found my first tool, <strong>copy and paste</strong>, this copy &amp; paste concept is a well known between the community, all the engineers around the world are looking into different websites and blogs, such as Stackoverflow, in order to find this magic potion for fix their problems. In my case, this process of finding the magic pill, was more focus on finding it on the project I was working at the moment. The idea is simple, study the way others before you were working on that project, and follow their paths, and if there is something you can&rsquo;t find on this code, go outside and find it (need to clarify that on this projects there wasn&rsquo;t a lot of innovation, so I didn&rsquo;t need to go a lot of times outside the base code). This was the first tool that gives me the first skill on how to learn, also gives me my first mistake, we always need to have a critic view about what are you copying/using, otherwise you can be using a wrong knowledge all your life. The copy&amp;paste concept tends to sound bad, so maybe we can use the concept of <em>don&rsquo;t reinvent the wheel</em>, which is the same but in a more positive way.</p>
-<p>On my second stage, I learnt a new programming language, an experience that every engineer should have at least once. The way I learnt this language was for me a new tool, I used a <strong>BOOK</strong>!!, there is for me a main difference between learning something from a book rather than a blog or website, and is the <strong>time</strong>, book writers tends to spent a lot of time writing their ideas, also most of them don&rsquo;t write these books on their own, they use the feedback from different professionals which means at the end, all the information you can find there can be more accurate than the one you can find in a blog or articles. With this I&rsquo;m not saying there isn&rsquo;t a lot of great articles and posts. Also on this stage I learnt one of the most important tool on engineering, <strong>share your idea and discuss it</strong>, I think there is always an evolution on your knowledge and your ideas if you try to defend them in front others, this is why I reckon is always a great idea, a discussion with respect and valid arguments, and specially with one concept, you need to be ready for be wrong and change your mind, which sometimes is hard to keep. The ignorance, in terms of, <em>you probably don&rsquo;t know everything about a subject</em>, is the way you can learn and acquire new knowledge.</p>
-<p><img src="/img/home-bg-jeep.jpg" alt=""></p>
-<p>The current stage drives me to face a new challenge, a challenge far a way from my country and my comfort zone. I realised about a lot of things, it was useful for understand that find a new job is not always an easy task, and that when you are out of your market the life isn&rsquo;t in the same way. I came to a country where the main language isn&rsquo;t my native language, where you are an immigrant and that all the things I have on my country now are useless. This is a feeling I had when I started to find a job here, the quote that a lot of engineers we have in our minds <em>Oh don&rsquo;t worry, I&rsquo;m sure I will find a new job easy, remember all the companies are looking for engineers</em>, which is on my opinion a not 100% real. So for the first time in my career, I knew about how hard is to find a job, I learnt about handling the frustration on sending a lot of emails and receive no response, to do a lot of interviews, a good ones, and at the end don&rsquo;t get the job and to be asked for show some local projects, in a way they can see my code skills even before the first interview.</p>
-<p>So all of this, and specially the last point, lead me to start writing this blog, maybe you can think <em>Why not just learn by your own and don&rsquo;t post anything?</em>, is true I can do the same without posting it, but the true value in all of this, is that when you write/code for someone else (other people can see and give you feedback), you are more focus and put more effort on what are you learning and trying to do.</p>
-<blockquote>
-<p>&ldquo;P.S. I want to improve my english as well&rdquo;</p>
-</blockquote>
+<h2 id="proposal">Proposal</h2>
+<p>I have many reasons why I fell in love with Go, when I started working with go there wasn&rsquo;t too much packages at that moment, so basically you needed to built everything from scratch, this was a great experience because I learnt a lot of basic concepts related with client and server comunications, that I didn&rsquo;t learn before in other languages because we used big frameworks such as Spring in Java. During my professional career I was focus on improve my knowledge about design, creation and maintaining of APIs, and one of the first thing that you will probably learn is how I can add a auth layer to my API. The aim of this blog is to show my proposal of a simple middleware that will authenticate your requests.</p>
+<p>One of the packages I have been using for a long time is <a href="https://github.com/gorilla/mux">https://github.com/gorilla/mux</a> so for me it makes sense to use it as a base for this middleware. If you want to see all the code we are about to talk, go here <a href="https://github.com/ramonmacias/go-auth-middleware">https://github.com/ramonmacias/go-auth-middleware</a>.</p>
+<h2 id="packages">Packages</h2>
+<p>On this project we have three main packages</p>
+<ul>
+<li><strong>api</strong>: this package provides an implementation of error interface for the api layer.</li>
+<li><strong>auth</strong>: this package provides an auth.Provider interface, a JWT implementation of that interface and a cookies service.</li>
+<li><strong>middleware</strong>: this package provides a two different approaches of how to implement the auth with a bearer token, one based on Authorization header and the other one based on cookies.</li>
+</ul>
+<h2 id="concerns">Concerns</h2>
+<p>Before we start with the two different approaches there is two things that we should comment. The first one is related with auth package, there you will find and auth.Provider interface and an implementation based on JWT, so if we want to create a new auth.Provider based on JWT we should use this.</p>
+<pre><code>provider := auth.NewJWTProvider(signingKey, tokenExpiryTime)
+</code></pre><p>The second thing that we should talk about, is the function we have on the middleware package</p>
+<pre><code>// ValidForRefresh is a function that can be used for give an
+// extra context on the middleware about is the business layer
+// accept this user as a valid user
+type ValidForRefresh func(userSession *auth.Session) error
+</code></pre><p>I realized that sometimes we need to apply some kind of validation before we let the user update his token, for example we can have some user status and depending on which status is the given user we should or not allow it to refresh the token (ban a user), but it could be a lot more of validation that we can apply depending on the business layer. So this func could be useful for apply those validations.</p>
+<p>On this project you will find two different approaches of how I managed the authentication request process, the first one is using the Authorization header and the second one is based on Cookies, both have advantatges and disadvantatges, so you can choose whatever suits better on your project. Both services are using <a href="https://github.com/gorilla/mux">https://github.com/gorilla/mux</a> as a base for setup the server and his routes.</p>
+<h2 id="authorization-header-based">Authorization header based</h2>
+<p>The authorization header approach will take the bearer token from the Authorization http header, using the value on this way <strong>Bearer $TOKEN</strong>, once it receives this token, the middleware will check if the token is valid or not, if is not valid, it could be because is expired, so we will check if we are allowed to refresh the token and answer back with a specific refresh token error message, this kind of error should we used from the client in order to ask for a new refreshed token. If the token is invalid or mallformed, the middleware will answer back with a forbidden or unathorized errors. If the token is valid, then the request will reach the final handler, adding on the context request the given session.</p>
+<p>In order to add this middleware on your routing:</p>
+<pre><code>router := mux.NewRouter()
+router.HandleFunc(&quot;/&quot;, sampleHandler)
+router.Use(middleware.AuthAPI(authProvider, middleware.ValidForRefresh()))
+</code></pre><p>Then your sampleHandler should be something like this:</p>
+<pre><code>func sampleHandler(wr http.ResponseWriter, r *http.Request) {
+  session := middleware.GetSessionFromContext(r)
+  // Add here the rest of the handler logic
+}
+</code></pre><p>The next figure will show you a sample of how it can work your API with this middleware</p>
+<p><img src="/img/authorization-header-based.jpg" alt=""></p>
+<h2 id="cookie-based">Cookie based</h2>
+<p>The Cookie based approach is working similar to the Authorization header, but the main difference is that we use a cookie for transport the token between the client and the server. On this case we need to use a cookie named <strong>bearer-token</strong> and inside the cookie value we should have our token. Once the request reach our middleware we will validate the token inside the cookie, in case the token is expired and we are able to refresh it, we will do it and we are going to update the token in the cookie so we can keep the session alive, in case the token is not valid we will expire the cookie, so the client need to ask for a new cookie (login). If the token is valid then the request will reach the final hanlder keeping the session on the request context.</p>
+<p>In order to add this middleware on your routing:</p>
+<pre><code>router := mux.NewRouter()
+router.HandleFunc(&quot;/&quot;, sampleHandler)
+router.Use(middleware.AuthCookieAPI(authProvider, middleware.ValidForRefresh()))
+</code></pre><p>Then your sampleHandler should be something like this:</p>
+<pre><code>func sampleHandler(wr http.ResponseWriter, r *http.Request) {
+  session := middleware.GetSessionFromContext(r)
+  // Add here the rest of the handler logic
+}
+</code></pre><p>The next figure will show you a sample of how it can work your API with this middleware</p>
+<p><img src="/img/cookie-based.jpg" alt=""></p>
 
 
                 
@@ -211,11 +268,11 @@
                 <hr>
                 <ul class="pager">
                     
-                    
-                    <li class="next">
-                        <a href="/2020/04/26/limit-offset-pagination/" data-toggle="tooltip" data-placement="top" title="Limit/Offset">Next
-                            Post &rarr;</a>
+                    <li class="previous">
+                        <a href="/2020/06/27/spaceship-shooter/" data-toggle="tooltip" data-placement="top" title="Spaceship Shooter Game">&larr;
+                            Previous Post</a>
                     </li>
+                    
                     
                 </ul>
 
