@@ -10,8 +10,8 @@
     <meta property="og:type" content="article">
 
     
-    <meta property="og:image" content="https://ramonmacias.github.io//img/tavascan_winter.jpg">
-    <meta property="twitter:image" content="https://ramonmacias.github.io//img/tavascan_winter.jpg" />
+    <meta property="og:image" content="img/sunset-collada-verda.jpg">
+    <meta property="twitter:image" content="img/sunset-collada-verda.jpg" />
     
 
     
@@ -34,36 +34,38 @@
     <meta name="keyword"  content="Ramon, Macias, Blog, Go, Computer">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Auth Middleware in Go-Ramon Blog</title>
+    <title>Auth Middleware in Go | Ramon Blog</title>
 
     <link rel="canonical" href="/2020/10/19/auth-middleware-in-go/">
 
-    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
-	
+    
+    
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
     
     <link rel="stylesheet" href="/css/zanshang.css">
+
     
-    
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.1/css/all.css" rel="stylesheet" type="text/css">
 
     
     
 
-    
     
     <script src="/js/jquery.min.js"></script>
-    
+
     
     <script src="/js/bootstrap.min.js"></script>
-    
+
     
     <script src="/js/hux-blog.min.js"></script>
+
+    
+    <script src="/js/lazysizes.min.js"></script>
 
     
     
@@ -72,7 +74,11 @@
 
 
 
+
+
+
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
     <div class="container-fluid">
         
         <div class="navbar-header page-scroll">
@@ -91,17 +97,18 @@
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/">Home</a>
+                        <a href="/">All Posts</a>
                     </li>
                     
                         
                     
                     
 		    
-                        <li><a href="/top/about/">ABOUT</a></li>
+                        <li><a href="/top/about//">ABOUT</a></li>
                     
-
-                    
+		            <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		           </li>
                 </ul>
             </div>
         </div>
@@ -146,7 +153,9 @@
         background-image: url('/img/sunset-collada-verda.jpg')
     }
 </style>
-<header class="intro-header">
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -165,15 +174,17 @@
                     <h1>Auth Middleware in Go</h1>
                     <h2 class="subheading">A simple proposal for auth middleware</h2>
                     <span class="meta">
-                        Posted by 
                         
-                            Ramon
-                         
-                        on 
-                        Monday, October 19, 2020
-                        
-                        
-                        
+                            Posted by 
+                            
+                                Ramon
+                             
+                            on 
+                            Monday, October 19, 2020
+                            
+                            
+                            
+                            
                     </span>
                 </div>
             </div>
@@ -190,27 +201,10 @@
 
             
             <div class="
-                col-lg-11 col-lg-offset-1
+                col-lg-8 col-lg-offset-2
                 col-md-10 col-md-offset-1
                 post-container">
 
-                
-                <header>
-                    <h2>TOC</h2>
-                </header>
-                <nav id="TableOfContents">
-  <ul>
-    <li>
-      <ul>
-        <li><a href="#proposal">Proposal</a></li>
-        <li><a href="#packages">Packages</a></li>
-        <li><a href="#concerns">Concerns</a></li>
-        <li><a href="#authorization-header-based">Authorization header based</a></li>
-        <li><a href="#cookie-based">Cookie based</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
                 
                 <blockquote>
 <p>We’re just enthusiastic about what we do. &ndash; Steve Jobs</p>
@@ -227,9 +221,9 @@
 </ul>
 <h2 id="concerns">Concerns</h2>
 <p>Before we start with the two different approaches there is two things that we should comment. The first one is related with auth package, there you will find and auth.Provider interface and an implementation based on JWT, so if we want to create a new auth.Provider based on JWT we should use this.</p>
-<pre><code>provider := auth.NewJWTProvider(signingKey, tokenExpiryTime)
+<pre tabindex="0"><code>provider := auth.NewJWTProvider(signingKey, tokenExpiryTime)
 </code></pre><p>The second thing that we should talk about, is the function we have on the middleware package</p>
-<pre><code>// ValidForRefresh is a function that can be used for give an
+<pre tabindex="0"><code>// ValidForRefresh is a function that can be used for give an
 // extra context on the middleware about is the business layer
 // accept this user as a valid user
 type ValidForRefresh func(userSession *auth.Session) error
@@ -238,33 +232,40 @@ type ValidForRefresh func(userSession *auth.Session) error
 <h2 id="authorization-header-based">Authorization header based</h2>
 <p>The authorization header approach will take the bearer token from the Authorization http header, using the value on this way <strong>Bearer $TOKEN</strong>, once it receives this token, the middleware will check if the token is valid or not, if is not valid, it could be because is expired, so we will check if we are allowed to refresh the token and answer back with a specific refresh token error message, this kind of error should we used from the client in order to ask for a new refreshed token. If the token is invalid or mallformed, the middleware will answer back with a forbidden or unathorized errors. If the token is valid, then the request will reach the final handler, adding on the context request the given session.</p>
 <p>In order to add this middleware on your routing:</p>
-<pre><code>router := mux.NewRouter()
-router.HandleFunc(&quot;/&quot;, sampleHandler)
+<pre tabindex="0"><code>router := mux.NewRouter()
+router.HandleFunc(&#34;/&#34;, sampleHandler)
 router.Use(middleware.AuthAPI(authProvider, middleware.ValidForRefresh()))
 </code></pre><p>Then your sampleHandler should be something like this:</p>
-<pre><code>func sampleHandler(wr http.ResponseWriter, r *http.Request) {
+<pre tabindex="0"><code>func sampleHandler(wr http.ResponseWriter, r *http.Request) {
   session := middleware.GetSessionFromContext(r)
   // Add here the rest of the handler logic
 }
 </code></pre><p>The next figure will show you a sample of how it can work your API with this middleware</p>
-<p><img src="/img/authorization-header-based.jpg" alt=""></p>
+<p>
+  <img src="/img/authorization-header-based.jpg" alt="">
+
+</p>
 <h2 id="cookie-based">Cookie based</h2>
 <p>The Cookie based approach is working similar to the Authorization header, but the main difference is that we use a cookie for transport the token between the client and the server. On this case we need to use a cookie named <strong>bearer-token</strong> and inside the cookie value we should have our token. Once the request reach our middleware we will validate the token inside the cookie, in case the token is expired and we are able to refresh it, we will do it and we are going to update the token in the cookie so we can keep the session alive, in case the token is not valid we will expire the cookie, so the client need to ask for a new cookie (login). If the token is valid then the request will reach the final hanlder keeping the session on the request context.</p>
 <p>In order to add this middleware on your routing:</p>
-<pre><code>router := mux.NewRouter()
-router.HandleFunc(&quot;/&quot;, sampleHandler)
+<pre tabindex="0"><code>router := mux.NewRouter()
+router.HandleFunc(&#34;/&#34;, sampleHandler)
 router.Use(middleware.AuthCookieAPI(authProvider, middleware.ValidForRefresh()))
 </code></pre><p>Then your sampleHandler should be something like this:</p>
-<pre><code>func sampleHandler(wr http.ResponseWriter, r *http.Request) {
+<pre tabindex="0"><code>func sampleHandler(wr http.ResponseWriter, r *http.Request) {
   session := middleware.GetSessionFromContext(r)
   // Add here the rest of the handler logic
 }
 </code></pre><p>The next figure will show you a sample of how it can work your API with this middleware</p>
-<p><img src="/img/cookie-based.jpg" alt=""></p>
+<p>
+  <img src="/img/cookie-based.jpg" alt="">
+
+</p>
 
 
                 
 
+                
                 <hr>
                 <ul class="pager">
                     
@@ -274,17 +275,40 @@ router.Use(middleware.AuthCookieAPI(authProvider, middleware.ValidForRefresh()))
                     </li>
                     
                     
+                    <li class="next">
+                        <a href="/2023/04/21/tech-book-club/" data-toggle="tooltip" data-placement="top" title="Tech Book Club">Next
+                            Post &rarr;</a>
+                    </li>
+                    
                 </ul>
+                
 
                 
-<div id="disqus-comment"></div>
 
 
 
             </div>
+
+            
             
             <div class="
-                col-lg-11 col-lg-offset-1
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
                 col-md-10 col-md-offset-1
                 sidebar-container">
 
@@ -301,9 +325,13 @@ router.Use(middleware.AuthCookieAPI(authProvider, middleware.ValidForRefresh()))
                         
                         
                         
+                        
+                        
                         <a href="/tags/go" title="go">
                             go
                         </a>
+                        
+                        
                         
                         
                         
@@ -326,58 +354,47 @@ router.Use(middleware.AuthCookieAPI(authProvider, middleware.ValidForRefresh()))
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                   
-                   <li>
-                       <a href='' rel="alternate" type="application/rss+xml" title="El Met" >
-                           <span class="fa-stack fa-lg">
-                               <i class="fa fa-circle fa-stack-2x"></i>
-                               <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
-                           </span>
-                       </a>
-                   </li>
-                   
+                <ul class="list-inline text-center">                  
                     
                     <li>
                         <a href="mailto:ramonmaciasgarcia@gmail.com">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
                     
                     
                     
                     
 
-                    
-
-		    
+		            
                     
                     
                     <li>
                         <a target="_blank" href="https://github.com/ramonmacias">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		            
                     
                     
                     
                     <li>
                         <a target="_blank" href="https://www.linkedin.com/in/ramon-macias-garcia-4a407365/">
                             <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
                             </span>
                         </a>
                     </li>
-		    
+		           
+                    
                     
                     
                     
@@ -386,9 +403,19 @@ router.Use(middleware.AuthCookieAPI(authProvider, middleware.ValidForRefresh()))
             
             
             
-                </ul>
+           
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="El Met" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fas fa-circle fa-stack-2x"></i>
+                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+            
+             </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; El Met 2020
+                    Copyright &copy; El Met 2023
                     <br>
                     <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
                     <iframe
@@ -406,7 +433,7 @@ router.Use(middleware.AuthCookieAPI(authProvider, middleware.ValidForRefresh()))
 
 
 <script>
-    function async(u, c) {
+    function loadAsync(u, c) {
       var d = document, t = 'script',
           o = d.createElement(t),
           s = d.getElementsByTagName(t)[0];
@@ -424,7 +451,7 @@ router.Use(middleware.AuthCookieAPI(authProvider, middleware.ValidForRefresh()))
 <script>
     
     if($('#tag_cloud').length !== 0){
-        async("/js/jquery.tagcloud.js",function(){
+        loadAsync("/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -436,10 +463,72 @@ router.Use(middleware.AuthCookieAPI(authProvider, middleware.ValidForRefresh()))
 
 
 <script>
-    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
 </script>
 
 

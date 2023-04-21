@@ -10,14 +10,14 @@
     <meta property="og:type" content="article">
 
     
-    <meta property="og:image" content="img/playa_de_las_cuevas.jpg">
-    <meta property="twitter:image" content="img/playa_de_las_cuevas.jpg" />
+    <meta property="og:image" content="img/menorca_spring.jpg">
+    <meta property="twitter:image" content="img/menorca_spring.jpg" />
     
 
     
-    <meta name="title" content="Limit/Offset" />
-    <meta property="og:title" content="Limit/Offset" />
-    <meta property="twitter:title" content="Limit/Offset" />
+    <meta name="title" content="Tech Book Club" />
+    <meta property="og:title" content="Tech Book Club" />
+    <meta property="twitter:title" content="Tech Book Club" />
     
 
     
@@ -34,9 +34,9 @@
     <meta name="keyword"  content="Ramon, Macias, Blog, Go, Computer">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Limit/Offset | Ramon Blog</title>
+    <title>Tech Book Club | Ramon Blog</title>
 
-    <link rel="canonical" href="/2020/04/26/limit-offset-pagination/">
+    <link rel="canonical" href="/2023/04/21/tech-book-club/">
 
     
     
@@ -150,7 +150,7 @@
 
 <style type="text/css">
     header.intro-header {
-        background-image: url('/img/playa_de_las_cuevas.jpg')
+        background-image: url('/img/menorca_spring.jpg')
     }
 </style>
 
@@ -162,17 +162,17 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/tags/go" title="Go">
-                            Go
+                        <a class="tag" href="/tags/culture" title="Culture">
+                            Culture
                         </a>
                         
-                        <a class="tag" href="/tags/pagination" title="Pagination">
-                            Pagination
+                        <a class="tag" href="/tags/learning" title="Learning">
+                            Learning
                         </a>
                         
                     </div>
-                    <h1>Limit/Offset</h1>
-                    <h2 class="subheading">An implementation of limit/offset pagination in Go</h2>
+                    <h1>Tech Book Club</h1>
+                    <h2 class="subheading">Why we use the book club</h2>
                     <span class="meta">
                         
                             Posted by 
@@ -180,7 +180,7 @@
                                 Ramon
                              
                             on 
-                            Sunday, April 26, 2020
+                            Friday, April 21, 2023
                             
                             
                             
@@ -207,94 +207,61 @@
 
                 
                 <blockquote>
-<p>The computer was born to solve problems that did not exist before. &ndash; Bill Gates</p>
+<p>It takes something more than intelligence to act intelligently. &ndash; Fyodor Dostoyevsky</p>
 </blockquote>
-<h2 id="pagination">Pagination</h2>
-<p>One of the most common feature that we will face at some point as a backend engineer, is how to deal with pagination on the server side. Exists different ways for implement that, and as you can imagine, each one has it good and bad points. On this post I will try to implement the most basic one in Go.</p>
-<p>So what&rsquo;s exactly the limit/offset approach? Most of the approaches about pagination ends with a query with the LIMIT and OFFSET values at the end of it, so the value on the limit, as the name says, is a limitation on the numbers of results you will receive from the query, for example if you want to have pages with a size of 10, the limit variable should take the value of 10. The offset value is basically the start point for the specific query, so for example the first page will take the offset value of 0, and the second page, if we take into account the page size is 10, it will be as well 10 for the offset var, 20 for the third page and so on until the end.</p>
-<p>This technique is easy to implement but presents two big problems. Result <strong>inconsistency</strong> and <strong>offset inefficiency</strong>. The inconsistency on this technique appears because we are not working each time with the same dataset, so take the following example, let&rsquo;s say we did a first call and received all the data of the first page, let&rsquo;s says 10 items, so we print these items and we ask for the second page, but as you can see, there is a gap time between, the call of the first page and the second page. So let&rsquo;s imagine, that on this gap of time, we insert a new item in our dataset, that will should be shown on the first page. This will lead us to an inconsistency because we will have again on the second page the last item of the first page, and we will miss this new item on that case. The offset inefficiency comes by the shifting the results by a large offset.</p>
-<p>Another big issue that presents this solution, is that you have no idea about how many items you will have, this simplifies the implementation, due we don&rsquo;t need to do an extra count query but, you lose the feature of moving to a specific page number or print how many pages you will have. But the point is, it worth the time of coding this approach and also to have to deal with the extra counter query? Sometimes yes but most of the times the customer doesn&rsquo;t care and most of the times they only want to be able to search and also sort the list.</p>
-<h2 id="implementation">Implementation</h2>
-<p>I implemented a solution for that problem that you can check <a href="https://github.com/ramonmacias/go-pagination/tree/master/limit-offset">here</a>. On this repository I will try to post some other approaches, feel free to take the code an add it into your own pagination package.</p>
-<p>All this package relies on the JSON API specification (<a href="https://jsonapi.org/format/#fetching-pagination">https://jsonapi.org/format/#fetching-pagination</a>) that defines the format of the parameters to use (page[limit] and page[offset]), as well the format of the JSON payload with the definition of the links object.</p>
-<p>The pagination package also allows us to sort the query, for this case I didn&rsquo;t follow 100% the JSON API specification (<a href="https://jsonapi.org/format/#fetching-sorting)">https://jsonapi.org/format/#fetching-sorting)</a>, the specification says we should format the sort parameter in the next way. The sort order for each field should be ascending unless it is prefixed with a minus, that means for example</p>
-<pre tabindex="0"><code>GET /articles?sort=-created,title
-</code></pre><p>This endpoint will order by desc the created field and asc the title field, I decided to use the format of <strong>field_name.order_sort</strong>, so the above sample will be</p>
-<pre tabindex="0"><code>GET /articles?sort=created.desc,title.asc
-</code></pre><p>Why I decided to apply this approach? I think one of the key values when you are writing code is that should be legible, which means that with a quick look I should be able to understand what&rsquo;s going to happen, so in my opinion the second approach is more legible than the first one. But on the other hand we use more characters than we needed for do the same.</p>
-<p>This pagination as I said at the begining works using the approach of limit and offset, which means we avoid to have an extra count query each time we want to use the pagination engine. So how we deal with the last page issue? The answer is simple, if we have a limit of 10 that means I want to have pages with a size of 10 items, I will do a query of limit+1 and then I will check if we have some more items on the next page in order to know if I&rsquo;m querying the last page or not, also then we deal with the removal of the extra item when we answer back, so the frontend still will receive always 10 items max instead of having the extra item requested.</p>
-<p>In order to deal with that we should receive on the Paginate function a []interface{} and here is when some bad things appear, how we deal with the fact of article = interface{} is valid but []article = []interface{} is not valid. The standard golang recomendations told us how to do it <a href="https://golang.org/doc/faq#convert_slice_of_interface">https://golang.org/doc/faq#convert_slice_of_interface</a></p>
-<p>So most of the time you should do something ugly like this</p>
-<pre tabindex="0"><code>t := []int{1, 2, 3, 4}
-s := make([]interface{}, len(t))
-for i, v := range t {
-    s[i] = v
-}
-</code></pre><p>Is not what I like but is the way for dealing on the management of removing last item data as well to check pagination links using len([]interface{}). Probably with the approach of having the extra query we will don&rsquo;t need to deal with this.</p>
-<p>Currently (26 April 2020), there is a proposal about generics in Go, that probably will change completely how we handle this []interface{}, I tried to implement a new version using the pre build go compiler with generics, but is to limited. The idea in general is to migrate into something that you can see on that article <a href="https://blog.tempus-ex.com/generics-in-go-how-they-work-and-how-to-play-with-them/">https://blog.tempus-ex.com/generics-in-go-how-they-work-and-how-to-play-with-them/</a></p>
-<h2 id="how-to-use">How to use</h2>
-<p>The package will take the values from three different params;</p>
+<h2 id="proposal">Proposal</h2>
+<p>This is one of the cultural initiatives that our company has undertaken. The purpose of this confluence page is to comprehensively document all aspects related to our book club, including the reasons for its existence, the methodology we use, and the activities we engage in. Our objective is to track the books we read and record all the insights generated during our discussions.</p>
+<h2 id="why-is-it-necessary">Why is it necessary?</h2>
+<p>Before embarking on any cultural initiative, it is imperative to answer the question of why it is necessary. In this regard, we have identified several important points worth mentioning:</p>
 <ul>
-<li>page[limit]</li>
-<li>page[offset]</li>
-<li>sort_by</li>
+<li>
+<p><strong>Sharing ideas is the key to success:</strong> The sharing of ideas is perhaps one of the most significant actions that humans have taken in order to grow and evolve. In a smaller context, we aim to achieve the same outcome by using the book club as a tool. As tech professionals, we often find ourselves in situations where we are discussing complex issues. However, not all members of the discussion may have the same level of knowledge. The book club helps to mitigate this problem by ensuring that all members have read the same amount of information, thus facilitating a more equitable and productive discussion.</p>
+</li>
+<li>
+<p><strong>A safe space for discussions:</strong> Creating a secure environment for discussions is a significant objective of our cultural organization. The book club provides an open platform where anyone interested can participate without any judgment. It is a space where individuals can learn and grow, recognizing that progress is only possible through the acceptance of our own ignorance. We acknowledge that this is a challenging task, which is why it is crucial to offer a safe space.</p>
+</li>
+<li>
+<p><strong>Your previous tech knowledge is not important:</strong> Prior technical knowledge is not a requirement to join the book club. As a platform for learning and growth, we welcome participants with varying levels of experience. Although we do not restrict the books we read to any specific technical subject, we prioritize selecting literature that directly impacts our daily work as tech professionals.</p>
+</li>
+<li>
+<p><strong>Investment for the company:</strong> While some may view the book club as a waste of time and resources, we consider it an investment in our company&rsquo;s growth. By cultivating a team of individuals with extensive knowledge, we enable them to make better decisions and identify problems more effectively, which ultimately results in improved software quality and faster delivery times.</p>
+</li>
+<li>
+<p><strong>We do it for fun:</strong> As a remote organization, team building is essential to us. We view the book club as a means of promoting a happy and satisfying work environment, and it helps to improve talent retention. As participants voluntarily attend the book club, we assume they enjoy it, and it fosters a positive work culture.</p>
+</li>
+<li>
+<p><strong>We get benefits at multiple levels:</strong> The benefits of participating in a technical book club include the opportunity to stay current with the latest trends and best practices in one&rsquo;s field, the chance to network and connect with other professionals in the industry (in case we open the book club to the public), and the ability to develop critical thinking and communication skills through engaging in meaningful and substantive discussions. Additionally, the club can serve as a valuable team-building and retention tool for organizations, providing employees with a sense of community and purpose that can lead to increased job satisfaction and motivation.</p>
+</li>
 </ul>
-<p>So taking into account you will have some handler similar to this</p>
-<pre tabindex="0"><code>func handler(wr http.ResponseWriter, req *http.Request) {
-
-}
-</code></pre><p>You will need to use the next function for get the pagination info</p>
-<pre tabindex="0"><code>func handler(wr http.ResponseWriter, req *http.Request) {
-  params, err := pagination.FindParams(req, defaultOffset, defaultLimit)
-
-  params.Limit
-  params.Offset
-  params.Sort
-}
-</code></pre><p>Once you get the params, the next step is to inform to your function (that will retrieve all the data) about this params object. This params object has a method named Query() string, that will return a formatted query in order to be appended on the end of your query, in the next snippet I will show you a case using sqlx</p>
-<pre tabindex="0"><code>func handler(wr http.ResponseWriter, req *http.Request) {
-  params, err := pagination.FindParams(req, defaultOffset, defaultLimit)
-
-  data := getSomeCoolData(params)
-}
-
-func getSomeCoolData(params pagination.Params) []interface{} {
-  data := []interface{}
-  db.Select(
-    &amp;data,
-    `SELECT * FROM cool_table`+params.Query,
-  )
-  return data  
-}
-</code></pre><p>This Query() method will append something like this <strong>LIMIT 10 OFFSET 0 ORDER BY created_at desc</strong></p>
-<p>The next step will be, how to deal with the data result and paginate it, after you make your paginated query and get the results the last thing you have to do is to call the Paginate function, and informa about the basice information needed, the data, the base path in order to build the different links and the pagination params.</p>
-<pre tabindex="0"><code>func handler(wr http.ResponseWriter, req *http.Request) {
-  params, err := pagination.FindParams(req, defaultOffset, defaultLimit)
-
-  data := getSomeCoolData(params)
-
-  json.NewEncoder(wr).Encode(pagination.Paginate(
-    data,
-    req.URL.EscapedPath(),
-    params,
-  ))
-}
-</code></pre><p>This will give an output like this</p>
-<pre tabindex="0"><code>{
-  &#34;data&#34;: [
-    {
-      &#34;custom_field&#34;: &#34;awesome value&#34;
-    },
-    //.....
-  ],
-  &#34;links&#34;: {
-    &#34;first&#34;: &#34;/data?page[limit]=10&amp;page[offset]=0&#34;,
-    &#34;prev&#34;: &#34;....&#34;,
-    &#34;next&#34;: &#34;....&#34;,
-    &#34;last&#34;: &#34;....&#34;
-  }
-}
-</code></pre><p>So this is a way of implement the limit/offset approach in Go, I will try to implement the other approaches so we can see the different options!</p>
+<h2 id="whats-a-book-club">What’s a book club?</h2>
+<p>A technical book club is an organized group of individuals with a shared interest in a particular technical subject or field, such as software engineering or data science, who regularly read and discuss books related to their area of expertise. The club provides a structured environment for members to deepen their knowledge and understanding of the subject matter, as well as an opportunity to share insights, ask questions, and engage in thoughtful discussions with other professionals.</p>
+<p>The technical book club typically operates on a regular schedule, with members reading a selected book or set of books over a specific time period, and then coming together to discuss the material in an open and collaborative forum. Members may take turns leading the discussions, summarizing key concepts, and posing questions to spark dialogue and reflection.</p>
+<h2 id="how-does-it-work">How does it work?</h2>
+<p>The technical book club has been a long-standing initiative that has been iteratively improved over time to ensure the comfort of all members.</p>
+<p>The following process is adhered to from selecting a book to tracking related outcomes.</p>
+<ul>
+<li>
+<p>The first step involves opening a discussion about which books to read. This is achieved through a dedicated Slack channel called #tech-book-club where all members can suggest books along with a brief description of what should be read. A week is given to allow everyone to share their book suggestions.</p>
+</li>
+<li>
+<p>Next, all the suggested books are collected and put in a poll where members can vote for their preferred book to read. There is no maximum number of votes allowed, and voting lasts for a week.</p>
+</li>
+<li>
+<p>After the voting process, a list of books is compiled, sorted by the number of votes each received. The book with the most votes is read first, and a consensus is reached on which book follows until the list is complete.</p>
+</li>
+<li>
+<p>Once a book is selected, sessions begin. Members analyze the length of each chapter and agree on how much should be read before the next session. The value can vary depending on the length of the discussions or the comfort of the members.</p>
+</li>
+<li>
+<p>The meetings take place every two weeks and last for one hour.</p>
+</li>
+<li>
+<p>All sessions are recorded and logged so that members who couldn&rsquo;t attend can watch and catch up on what was discussed.</p>
+</li>
+<li>
+<p>Finally, the book is logged on a dedicated Confluence page to inspire other members to read the book and explore related materials.</p>
+</li>
+</ul>
 
 
                 
@@ -304,15 +271,10 @@ func getSomeCoolData(params pagination.Params) []interface{} {
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2020/04/13/hello-world/" data-toggle="tooltip" data-placement="top" title="Welcome to my blog">&larr;
+                        <a href="/2020/10/19/auth-middleware-in-go/" data-toggle="tooltip" data-placement="top" title="Auth Middleware in Go">&larr;
                             Previous Post</a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/2020/06/27/spaceship-shooter/" data-toggle="tooltip" data-placement="top" title="Spaceship Shooter Game">Next
-                            Post &rarr;</a>
-                    </li>
                     
                 </ul>
                 

@@ -6,11 +6,7 @@
     <description>Recent content in Pagination on El Met</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 26 Apr 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://ramonmacias.github.io/tags/pagination/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 26 Apr 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://ramonmacias.github.io/tags/pagination/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Limit/Offset</title>
       <link>https://ramonmacias.github.io/2020/04/26/limit-offset-pagination/</link>
@@ -18,7 +14,7 @@
       
       <guid>https://ramonmacias.github.io/2020/04/26/limit-offset-pagination/</guid>
       <description>The computer was born to solve problems that did not exist before. &amp;ndash; Bill Gates
- Pagination One of the most common feature that we will face at some point as a backend engineer, is how to deal with pagination on the server side. Exists different ways for implement that, and as you can imagine, each one has it good and bad points. On this post I will try to implement the most basic one in Go.</description>
+Pagination One of the most common feature that we will face at some point as a backend engineer, is how to deal with pagination on the server side. Exists different ways for implement that, and as you can imagine, each one has it good and bad points. On this post I will try to implement the most basic one in Go.</description>
     </item>
     
   </channel>
